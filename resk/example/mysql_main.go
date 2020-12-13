@@ -9,7 +9,7 @@ import (
 
 func main() {
 
-	dsName := "root:12345678@tcp(127.0.0.1:3306/po?charset=utf8)"
+	dsName := "root:12345678@tcp(127.0.0.1:3306)/po?charset=utf8&parseTime=true"
 	db, err := sql.Open("mysql", dsName)
 	if err != nil {
 		fmt.Println(err)
@@ -21,5 +21,6 @@ func main() {
 	// 最大链接存活时间
 	db.SetConnMaxIdleTime(7 * time.Hour)
 	fmt.Println(db.Ping())
+	fmt.Println(db.Query("select now()"))
 	defer db.Close()
 }
