@@ -6,7 +6,7 @@ const (
 	KeyProps = "_conf"
 )
 
-//资源启动器上下文，
+//资源启动器上下文
 //用来在服务资源初始化、安装、启动和停止的生命周期中变量和对象的传递
 type StarterContext map[string]interface{}
 
