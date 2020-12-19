@@ -16,7 +16,7 @@ func TestAccountDomain_Create(t *testing.T) {
 		Balance:  decimal.NewFromFloat(0),
 		Status:   1,
 	}
-	domain := new(accountDomain)
+	domain := new(AccountDomain)
 	Convey("账户创建", t, func() {
 		rdto, err := domain.Create(dto)
 		So(err, ShouldBeNil)
@@ -42,7 +42,7 @@ func TestAccountDomain_Transfer(t *testing.T) {
 		Balance:  decimal.NewFromFloat(100),
 		Status:   1,
 	}
-	domain := accountDomain{}
+	domain := AccountDomain{}
 	Convey("转账测试", t, func() {
 		//账户1的准备
 		dto1, err := domain.Create(*adto1)
