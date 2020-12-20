@@ -82,7 +82,34 @@ func (a *AccountApi) transferHandler(context *gin.Context) {
 // 查询红包账户接口：/v1/account/envelope/get
 //查询红包账户的web接口: /v1/account/envelope/get
 func (a *AccountApi) getEnvelopeAccountHandler(ctx *gin.Context) {
-	ctx.JSON(http.StatusOK, gin.H{"data": "gin"})
+	userId := ctx.Param("userId")
+	r := base.Res{
+		Code: base.ResCodeOk,
+	}
+	if userId == "" {
+		r.Code = base.ResCodeRequestParamsError
+		r.Message = "用户ID不能为空"
+		ctx.JSON(http.StatusOK, r)
+		return
+	}
+	account := a.service.GetEnvelopeAccountByUserId(userId)
+	r.Data = account
+	ctx.JSON(http.StatusOK, r)
 }
 
 // 查询账户信息接口：/v1/account/get
+func (a *AccountApi) getAccountHandler(context *gin.Context) {
+	accountNo := context.Param("accountNo")
+	r := base.Res{
+		Code: base.ResCodeOk,
+	}
+	if accountNo == "" {
+		r.Code = base.ResCodeRequestParamsError
+		r.Message = "账户编号不能为空"
+		context.JSON(http.StatusOK, r)
+		return
+	}
+	account := a.service.GetAccount(accountNo)
+	r.Data = account
+	context.JSON(http.StatusOK, r)
+}
