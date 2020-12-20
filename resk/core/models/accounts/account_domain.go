@@ -3,7 +3,7 @@ package accounts
 import (
 	"errors"
 	"github.com/memo012/red-packet/resk/constant"
-	data "github.com/memo012/red-packet/resk/core/data/accounts"
+	data2 "github.com/memo012/red-packet/resk/core/data"
 	"github.com/memo012/red-packet/resk/core/service"
 	"github.com/memo012/red-packet/resk/infra/base"
 	"github.com/segmentio/ksuid"
@@ -13,8 +13,8 @@ import (
 )
 
 type AccountDomain struct {
-	account    data.Account
-	accountLog data.AccountLog
+	account    data2.Account
+	accountLog data2.AccountLog
 }
 
 // 创建logNo 的逻辑
@@ -30,7 +30,7 @@ func (domain *AccountDomain) createAccountNo() {
 // 创建流水记录
 func (domain *AccountDomain) createAccountLog() {
 	// 通过account来创建流水 创建账户逻辑在前
-	domain.accountLog = data.AccountLog{}
+	domain.accountLog = data2.AccountLog{}
 	domain.createAccountLogNo()
 	domain.accountLog.TradeNo = domain.accountLog.LogNo
 
@@ -54,7 +54,7 @@ func (domain *AccountDomain) createAccountLog() {
 // 账户创建的业务逻辑
 func (domain *AccountDomain) Create(dto service.AccountDTO) (*service.AccountDTO, error) {
 	// 创建账户持久化对象
-	domain.account = data.Account{}
+	domain.account = data2.Account{}
 	domain.account.FromDTO(&dto)
 	domain.createAccountNo()
 	domain.account.UserName.Valid = true
@@ -99,7 +99,7 @@ func (a *AccountDomain) Transfer(dto service.AccountTransferDTO) (status constan
 	}
 
 	// 创建流水记录
-	a.accountLog = data.AccountLog{}
+	a.accountLog = data2.AccountLog{}
 	a.accountLog.FromTransferDTO(&dto)
 	a.createAccountLogNo()
 	// 检查余额是否足够：通过乐观锁来验证 更新余额的同时来验证余额是否足够
@@ -141,7 +141,7 @@ func (a *AccountDomain) Transfer(dto service.AccountTransferDTO) (status constan
 // 根据账户编号查询账户信息
 func (a *AccountDomain) GetAccount(accountNo string) *service.AccountDTO {
 	accountDao := AccountDao{}
-	var account *data.Account
+	var account *data2.Account
 	err := base.Tx(func(runner *dbx.TxRunner) error {
 		accountDao.runner = runner
 		account = accountDao.GetOne(accountNo)
@@ -159,7 +159,7 @@ func (a *AccountDomain) GetAccount(accountNo string) *service.AccountDTO {
 // 根据用户ID查询红包账户信息
 func (a *AccountDomain) GetEnvelopeAccountByUserId(userId string) *service.AccountDTO {
 	accountDao := AccountDao{}
-	var account *data.Account
+	var account *data2.Account
 	err := base.Tx(func(runner *dbx.TxRunner) error {
 		accountDao.runner = runner
 		account = accountDao.GetByUserId(userId, int(constant.EnvelopeAccountType))
@@ -177,7 +177,7 @@ func (a *AccountDomain) GetEnvelopeAccountByUserId(userId string) *service.Accou
 // 根据流水ID来查询账户流水
 func (a *AccountDomain) GetAccountLog(logNo string) *service.AccountLogDTO {
 	dao := AccountLogDao{}
-	var log *data.AccountLog
+	var log *data2.AccountLog
 	err := base.Tx(func(runner *dbx.TxRunner) error {
 		dao.runner = runner
 		log = dao.GetOne(logNo)
@@ -196,7 +196,7 @@ func (a *AccountDomain) GetAccountLog(logNo string) *service.AccountLogDTO {
 // 根据交易编号来查询账户流水
 func (a *AccountDomain) GetAccountLogByTradeNo(tradeNo string) *service.AccountLogDTO {
 	dao := AccountLogDao{}
-	var log *data.AccountLog
+	var log *data2.AccountLog
 	err := base.Tx(func(runner *dbx.TxRunner) error {
 		dao.runner = runner
 		log = dao.GetByTradeNo(tradeNo)

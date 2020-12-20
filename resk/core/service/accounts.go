@@ -15,6 +15,17 @@ type AccountService interface {
 	StoreValue(dto AccountTransferDTO) (constant.TransferredStatus, error)
 	// 账户查询
 	GetEnvelopeAccountByUserId(userId string) *AccountDTO
+	GetAccount(accountNo string) *AccountDTO
+}
+
+//账户创建对象
+type AccountCreatedDTO struct {
+	UserId       string `validate:"required"`
+	Username     string `validate:"required"`
+	AccountName  string `validate:"required"`
+	AccountType  int
+	CurrencyCode string
+	Amount       string `validate:"numeric"`
 }
 
 // 账户交易的参与者
@@ -34,16 +45,6 @@ type AccountTransferDTO struct {
 	ChangeType  constant.ChangeType `validate:"required,numeric"` //流水交易类型，0 创建账户，>0 为收入类型，<0 为支出类型，自定义
 	ChangeFlag  constant.ChangeFlag `validate:"required,numeric"` //交易变化标识：-1 出账 1为进账，枚举
 	Decs        string              ``                            //交易描述
-}
-
-// 账户创建
-type AccountCreatedDTO struct {
-	UserID       string
-	UserName     string
-	AccountName  string
-	AccountType  int
-	CurrencyCode string
-	Amount       string
 }
 
 //账户

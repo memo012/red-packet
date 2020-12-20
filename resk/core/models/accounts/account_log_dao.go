@@ -1,7 +1,7 @@
 package accounts
 
 import (
-	data "github.com/memo012/red-packet/resk/core/data/accounts"
+	data2 "github.com/memo012/red-packet/resk/core/data"
 	"github.com/sirupsen/logrus"
 	"github.com/tietang/dbx"
 )
@@ -11,8 +11,8 @@ type AccountLogDao struct {
 }
 
 //通过流水编号查询流水记录
-func (dao *AccountLogDao) GetOne(logNo string) *data.AccountLog {
-	a := &data.AccountLog{LogNo: logNo}
+func (dao *AccountLogDao) GetOne(logNo string) *data2.AccountLog {
+	a := &data2.AccountLog{LogNo: logNo}
 	ok, err := dao.runner.GetOne(a)
 	if err != nil {
 		logrus.Error(err)
@@ -26,9 +26,9 @@ func (dao *AccountLogDao) GetOne(logNo string) *data.AccountLog {
 }
 
 //通过交易编号来查询流水记录
-func (dao *AccountLogDao) GetByTradeNo(tradeNo string) *data.AccountLog {
+func (dao *AccountLogDao) GetByTradeNo(tradeNo string) *data2.AccountLog {
 	sql := "select * from account_log where trade_no=?"
-	out := &data.AccountLog{}
+	out := &data2.AccountLog{}
 	ok, err := dao.runner.Get(out, sql, tradeNo)
 	if err != nil {
 		logrus.Error(err)
@@ -42,7 +42,7 @@ func (dao *AccountLogDao) GetByTradeNo(tradeNo string) *data.AccountLog {
 }
 
 //流水记录的写入
-func (dao *AccountLogDao) Insert(l *data.AccountLog) (id int64, err error) {
+func (dao *AccountLogDao) Insert(l *data2.AccountLog) (id int64, err error) {
 	rs, err := dao.runner.Insert(l)
 	if err != nil {
 		return 0, err

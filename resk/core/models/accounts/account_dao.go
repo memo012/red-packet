@@ -1,7 +1,7 @@
 package accounts
 
 import (
-	data "github.com/memo012/red-packet/resk/core/data/accounts"
+	data2 "github.com/memo012/red-packet/resk/core/data"
 	"github.com/shopspring/decimal"
 	"github.com/sirupsen/logrus"
 	"github.com/tietang/dbx"
@@ -12,8 +12,8 @@ type AccountDao struct {
 }
 
 // 通过账户ID查询账户信息
-func (dao *AccountDao) GetOne(accountNo string) *data.Account {
-	a := &data.Account{AccountNo: accountNo}
+func (dao *AccountDao) GetOne(accountNo string) *data2.Account {
+	a := &data2.Account{AccountNo: accountNo}
 	ok, err := dao.runner.GetOne(a)
 	if err != nil {
 		logrus.Error(err)
@@ -26,8 +26,8 @@ func (dao *AccountDao) GetOne(accountNo string) *data.Account {
 }
 
 // 通过用户ID和账户类型来查询账户信息
-func (dao *AccountDao) GetByUserId(userId string, accountType int) *data.Account {
-	a := &data.Account{}
+func (dao *AccountDao) GetByUserId(userId string, accountType int) *data2.Account {
+	a := &data2.Account{}
 	sql := "select * from account " +
 		"where user_id=? and account_type=?"
 	ok, err := dao.runner.Get(a, sql, userId, accountType)
@@ -42,7 +42,7 @@ func (dao *AccountDao) GetByUserId(userId string, accountType int) *data.Account
 }
 
 // 账户数据插入
-func (dao *AccountDao) Insert(a *data.Account) (id int64, err error) {
+func (dao *AccountDao) Insert(a *data2.Account) (id int64, err error) {
 	rs, err := dao.runner.Insert(a)
 	if err != nil {
 		return 0, nil

@@ -2,7 +2,7 @@ package accounts
 
 import (
 	"database/sql"
-	data "github.com/memo012/red-packet/resk/core/data/accounts"
+	data2 "github.com/memo012/red-packet/resk/core/data"
 	"github.com/memo012/red-packet/resk/infra/base"
 	_ "github.com/memo012/red-packet/resk/testx"
 	"github.com/segmentio/ksuid"
@@ -17,7 +17,7 @@ func TestAccountDao_GetOne(t *testing.T) {
 	err := base.Tx(func(runner *dbx.TxRunner) error {
 		dao := &AccountDao{runner: runner}
 		Convey("通过编号查询账户数据", t, func() {
-			a := &data.Account{
+			a := &data2.Account{
 				Balance:     decimal.NewFromFloat(100),
 				Status:      1,
 				AccountNo:   ksuid.New().Next().String(),
@@ -46,7 +46,7 @@ func TestAccountDao_GetByUserId(t *testing.T) {
 	err := base.Tx(func(runner *dbx.TxRunner) error {
 		dao := &AccountDao{runner: runner}
 		Convey("通过用户ID和账户类型查询账户数据", t, func() {
-			a := &data.Account{
+			a := &data2.Account{
 				Balance:     decimal.NewFromFloat(100),
 				Status:      1,
 				AccountNo:   ksuid.New().Next().String(),
@@ -76,7 +76,7 @@ func TestAccountDao_UpdateBalance(t *testing.T) {
 		dao := &AccountDao{runner: runner}
 		balance := decimal.NewFromFloat(100)
 		Convey("更新账户余额", t, func() {
-			a := &data.Account{
+			a := &data2.Account{
 				Balance:     balance,
 				Status:      1,
 				AccountNo:   ksuid.New().Next().String(),

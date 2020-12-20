@@ -2,7 +2,7 @@ package accounts
 
 import (
 	"github.com/memo012/red-packet/resk/constant"
-	data "github.com/memo012/red-packet/resk/core/data/accounts"
+	data2 "github.com/memo012/red-packet/resk/core/data"
 	"github.com/memo012/red-packet/resk/infra/base"
 	"github.com/segmentio/ksuid"
 	"github.com/shopspring/decimal"
@@ -18,7 +18,7 @@ func TestAccountLogDao(t *testing.T) {
 			runner: runner,
 		}
 		Convey("通过Log编号查询账户流水数据", t, func() {
-			a := &data.AccountLog{
+			a := &data2.AccountLog{
 				LogNo:      ksuid.New().Next().String(),
 				TradeNo:    ksuid.New().Next().String(),
 				Status:     1,

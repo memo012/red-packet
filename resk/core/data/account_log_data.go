@@ -1,4 +1,4 @@
-package accounts
+package data
 
 import (
 	"github.com/memo012/red-packet/resk/constant"
